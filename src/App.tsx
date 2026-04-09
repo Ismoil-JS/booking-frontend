@@ -19,6 +19,8 @@ import DashboardComments from '@/pages/Dashboard/Comments/index';
 import DashboardEarnings from '@/pages/Dashboard/Earnings/index';
 import TutorProfile from '@/pages/TutorProfile/index';
 import ChatPage from '@/pages/Chat/index';
+import RealtimeChatsPage from '@/pages/RealtimeChats/index';
+import RealtimeConversationPage from '@/pages/RealtimeChats/Conversation';
 import BookingSuccess from '@/pages/BookingSuccess/index';
 import BookingCancel from '@/pages/BookingCancel/index';
 
@@ -56,6 +58,8 @@ function App() {
                 <Route path="comments" element={<DashboardComments />} />
                 <Route path="earnings" element={<DashboardEarnings />} />
                 <Route path="chat" element={<ChatPage />} />
+                <Route path="chats" element={<RealtimeChatsPage />} />
+                <Route path="chats/:id" element={<RealtimeConversationPage />} />
               </Route>
               <Route path="/" element={<Layout />}>
                 <Route index element={<LandingPage />} />

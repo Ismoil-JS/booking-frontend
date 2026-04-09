@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Card, Spin, Alert, Button, Modal, message } from 'antd';
-import { Check, ArrowLeft, Briefcase, Award, Calendar, Star } from 'lucide-react';
+import { Check, ArrowLeft, Briefcase, Award, Calendar, Star, MessageCircle } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { selectUser } from '@/store/authSlice';
 import { assetUrl } from '@/shared/lib/assetUrl';
@@ -61,7 +61,6 @@ export default function TutorProfile() {
 
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<SlotApi | null>(null);
-  const [selectedDate, setSelectedDate] = useState<string>('');
   const [startingPayment, setStartingPayment] = useState(false);
 
   const handleSlotClick = (slot: SlotApi) => {
@@ -71,7 +70,6 @@ export default function TutorProfile() {
       return;
     }
     setSelectedSlot(slot);
-    setSelectedDate(slotDateYMD(slot) || bookingDate);
     setPaymentOpen(true);
   };
 
@@ -91,7 +89,6 @@ export default function TutorProfile() {
   const handlePaymentClose = () => {
     setPaymentOpen(false);
     setSelectedSlot(null);
-    setSelectedDate('');
     setStartingPayment(false);
   };
 
@@ -203,6 +200,22 @@ export default function TutorProfile() {
                 >
                   {tutor.costPer30Min}$ <span className="text-base font-normal text-gray-500">/ 30 min</span>
                 </span>
+                <Button
+                  type="default"
+                  icon={<MessageCircle className="w-4 h-4" />}
+                  className="rounded-xl"
+                  disabled={!isAuthenticated}
+                  onClick={() => {
+                    if (!isAuthenticated) {
+                      navigate('/login', { state: { from: { pathname: window.location.pathname } } });
+                      return;
+                    }
+                    // Socket chat:join expects the other *user* id, not tutor profile id
+                    navigate(`/dashboard/chats?otherUserId=${tutor.user.id}`);
+                  }}
+                >
+                  Message tutor
+                </Button>
               </div>
             </div>
           </div>

@@ -2,6 +2,8 @@ import request from '@/services/api';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL ?? '';
 
+/* ── AI Chat (SSE streaming) ─────────────────────────────────────── */
+
 export interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
   content: string;
@@ -16,7 +18,6 @@ export interface ChatResponse {
   reply: string;
 }
 
-/** SSE event chunk from POST /chat/stream */
 export interface ChatStreamChunk {
   text?: string;
   error?: string;
@@ -27,13 +28,9 @@ export async function sendChatMessage(body: ChatRequest): Promise<ChatResponse> 
   return data;
 }
 
-/**
- * Stream assistant reply from POST /chat/stream. Calls onChunk for each text chunk.
- * Returns the full reply when the stream ends. Throws on stream error or non-2xx response.
- */
 export async function streamChatMessage(
   body: ChatRequest,
-  onChunk: (text: string) => void
+  onChunk: (text: string) => void,
 ): Promise<string> {
   const res = await fetch(`${BASE_URL}chat/stream`, {
     method: 'POST',
@@ -71,4 +68,87 @@ export async function streamChatMessage(
     }
   }
   return fullText;
+}
+
+/* ── Realtime Learner-Tutor Chat ─────────────────────────────────── */
+
+export interface RealtimeQuota {
+  preBookTutorLimit: number;
+  preBookTutorsUsed: number;
+  preBookTutorsRemaining: number;
+  canStartNewTutorChat: boolean;
+}
+
+export interface RealtimeConversationUser {
+  id: number;
+  fullName: string;
+  userType?: string;
+  profileImage?: string | null;
+}
+
+export interface RealtimeConversationLastMessage {
+  id: number;
+  body: string;
+  senderId?: number;
+  senderUserId?: number;
+  createdAt: string;
+}
+
+export interface RealtimeConversation {
+  id: number;
+  directKey: string;
+  createdAt: string;
+  lastMessageAt: string | null;
+  participants: RealtimeConversationUser[];
+  lastMessage: RealtimeConversationLastMessage | null;
+  isTutorUnlockedByBooking: boolean;
+  messageLimit: number;
+  messagesUsed: number;
+  messagesRemaining: number;
+  unreadCount: number;
+}
+
+export interface RealtimeMessage {
+  id: number;
+  conversationId: number;
+  senderId: number;
+  senderUserId?: number;  // backend may return this instead of senderId
+  body: string;
+  createdAt: string;
+  readAt?: string | null;
+}
+
+/** Get the sender ID from a message, handling both field names */
+export function getSenderId(m: RealtimeMessage): number {
+  return m.senderId ?? m.senderUserId ?? 0;
+}
+
+export interface RealtimeConversationListResponse extends RealtimeQuota {
+  items: RealtimeConversation[];
+}
+
+export interface RealtimeMessagesResponse {
+  items: RealtimeMessage[];
+  nextCursor: number | null;
+}
+
+export interface RealtimeMessagesParams {
+  cursor?: number;
+  limit?: number;
+}
+
+export async function getRealtimeConversations(): Promise<RealtimeConversationListResponse> {
+  const { data } = await request.get<RealtimeConversationListResponse>('/realtime-chat/conversations');
+  return data;
+}
+
+export async function getRealtimeConversationMessages(
+  conversationId: number,
+  params?: RealtimeMessagesParams,
+): Promise<RealtimeMessagesResponse> {
+  const { data } = await request.get<RealtimeMessagesResponse>(
+    `/realtime-chat/conversations/${conversationId}/messages`,
+    { params },
+  );
+  return data;
 }

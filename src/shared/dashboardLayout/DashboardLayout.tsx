@@ -22,12 +22,14 @@ const tutorMenus = [
   { key: 'meetings', path: '/dashboard/meetings', label: 'Meetings', icon: Video },
   { key: 'calendar', path: '/dashboard/calendar', label: 'Calendar', icon: Calendar },
   { key: 'earnings', path: '/dashboard/earnings', label: 'Earnings', icon: DollarSign },
+  { key: 'chats', path: '/dashboard/chats', label: 'Chats', icon: MessageCircle },
   { key: 'chat', path: '/dashboard/chat', label: 'AI Chat', icon: MessageCircle },
 ];
 
 const learnerMenus = [
   { key: 'profile', path: '/dashboard/profile', label: 'Profile', icon: User },
   { key: 'meetings', path: '/dashboard/meetings', label: 'Meetings', icon: Video },
+  { key: 'chats', path: '/dashboard/chats', label: 'Chats', icon: MessageCircle },
   { key: 'chat', path: '/dashboard/chat', label: 'AI Chat', icon: MessageCircle },
 ];
 
@@ -203,8 +205,8 @@ export default function DashboardLayout() {
         <FloatButton
           type="primary"
           icon={<MessageCircle className="w-5 h-5" />}
-          tooltip="Chat with me"
-          onClick={() => navigate('/dashboard/chat')}
+          tooltip="Open chats"
+          onClick={() => navigate('/dashboard/chats')}
           style={{ right: 24, bottom: 24 }}
         />
       </Layout>
