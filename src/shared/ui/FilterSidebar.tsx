@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Input, Checkbox, Slider, Button } from 'antd';
 import { Search } from 'lucide-react';
 import type { TutorCategory } from '@/entities/Tutor/types';

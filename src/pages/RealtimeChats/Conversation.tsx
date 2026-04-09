@@ -204,13 +204,35 @@ export default function RealtimeConversationPage() {
     };
   }, [currentConversation, user]);
 
-  /* seed messages from query */
+  /* seed messages from query + mark last unread message as read on load */
   useEffect(() => {
     const raw = messagesQuery.data?.items;
     const seeded = Array.isArray(raw) ? raw : [];
     setLocalMessages(seeded);
     setHasOlderMessages(!!messagesQuery.data?.nextCursor);
-  }, [messagesQuery.data]);
+
+    if (!token || !conversationId || seeded.length === 0) return;
+
+    // Find the last message sent by the OTHER user and mark it as read,
+    // so the backend updates lastReadMessageId and clears the unread badge.
+    const lastOtherMessage = [...seeded]
+      .reverse()
+      .find((m) => getSenderId(m) !== user?.id);
+
+    if (lastOtherMessage) {
+      const socket = getChatSocket(token);
+      const doMark = () => {
+        socket.emit('chat:read', { conversationId, messageId: lastOtherMessage.id });
+        // Refresh conversation list so the unread badge clears immediately
+        void queryClient.invalidateQueries({ queryKey: ['realtime-chat', 'conversations'] });
+      };
+      if (socket.connected) {
+        doMark();
+      } else {
+        socket.once('connect', doMark);
+      }
+    }
+  }, [messagesQuery.data, token, conversationId, user?.id, queryClient]);
 
   /* auto-scroll logic */
   const scrollToBottom = useCallback((smooth = true) => {
