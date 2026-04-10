@@ -9,6 +9,7 @@ import { assetUrl } from '@/shared/lib/assetUrl';
 import { useTutorQuery, type SlotApi } from '@/entities/Tutor/api';
 import { createCheckoutSession } from '@/entities/Booking/api';
 import TutorReviews from '@/shared/ui/TutorReviews';
+import MarkdownText from '@/shared/ui/MarkdownText';
 import ReviewForm from '@/shared/ui/ReviewForm';
 import type { Booking } from '@/store/authSlice';
 
@@ -285,13 +286,17 @@ export default function TutorProfile() {
             {tutor.bio && (
               <section className="mb-6">
                 <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Short bio</h2>
-                <p className="text-gray-700 leading-relaxed">{tutor.bio}</p>
+                <div className="text-gray-700">
+                  <MarkdownText variant="profile">{tutor.bio}</MarkdownText>
+                </div>
               </section>
             )}
             {tutor.about && (
               <section className="mb-6">
                 <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">About</h2>
-                <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{tutor.about}</p>
+                <div className="text-gray-700">
+                  <MarkdownText variant="profile">{tutor.about}</MarkdownText>
+                </div>
               </section>
             )}
 

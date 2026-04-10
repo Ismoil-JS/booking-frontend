@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Button, Input, Alert, message } from 'antd';
 import { Send, Bot, User } from 'lucide-react';
 import { streamChatMessage, type ChatMessage } from '@/entities/Chat/api';
+import MarkdownText from '@/shared/ui/MarkdownText';
 
 const sectionPadding = 'py-6';
 
@@ -118,7 +119,15 @@ const ChatPage = () => {
                       : 'bg-gray-100 text-gray-900 rounded-tl-sm'
                   }`}
                 >
-                  <p className="text-sm whitespace-pre-wrap break-words">{msg.content}</p>
+                  {msg.role === 'assistant' ? (
+                    <MarkdownText variant="chatAssistant" className="text-sm">
+                      {msg.content}
+                    </MarkdownText>
+                  ) : (
+                    <MarkdownText variant="chatUser" className="text-sm">
+                      {msg.content}
+                    </MarkdownText>
+                  )}
                 </div>
               </div>
             ))}
@@ -138,10 +147,10 @@ const ChatPage = () => {
                       The system is thinking…
                     </p>
                   ) : (
-                    <p className="text-sm whitespace-pre-wrap break-words">
-                      {streamingContent}
+                    <div className="text-sm">
+                      <MarkdownText variant="chatAssistant">{streamingContent}</MarkdownText>
                       <span className="inline-block w-2 h-4 ml-0.5 bg-indigo-500 animate-pulse align-middle" aria-hidden />
-                    </p>
+                    </div>
                   )}
                 </div>
               </div>

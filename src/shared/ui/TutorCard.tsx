@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { selectUser } from '@/store/authSlice';
 import { assetUrl } from '@/shared/lib/assetUrl';
 import type { Tutor } from '@/entities/Tutor/types';
+import MarkdownText from '@/shared/ui/MarkdownText';
 
 interface TutorCardProps {
   tutor: Tutor;
@@ -92,9 +93,13 @@ const TutorCard = ({ tutor }: TutorCardProps) => {
             <span className="text-gray-500">No reviews yet</span>
           )}
         </div>
-        <p className="mt-1 text-gray-600 text-sm line-clamp-2 leading-relaxed">
-          {tutor.bio || 'No bio yet.'}
-        </p>
+        <div className="mt-1 max-h-[3rem] overflow-hidden text-sm leading-relaxed text-gray-600">
+          {tutor.bio ? (
+            <MarkdownText variant="card">{tutor.bio}</MarkdownText>
+          ) : (
+            <span>No bio yet.</span>
+          )}
+        </div>
 
         <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between gap-3">
           <span
