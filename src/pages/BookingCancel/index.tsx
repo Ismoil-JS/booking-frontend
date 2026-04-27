@@ -28,7 +28,7 @@ export default function BookingCancel() {
                   Browse tutors
                 </Button>
               </Link>
-              <Link to="/dashboard/meetings">
+              <Link to="/meetings">
                 <Button className="rounded-xl">My meetings</Button>
               </Link>
             </div>

@@ -115,7 +115,7 @@ export default function BookingSuccess() {
               )}
 
               <div className="flex flex-wrap gap-3">
-                <Link to="/dashboard/meetings">
+                <Link to="/meetings">
                   <Button type="primary" className="bg-blue-600 rounded-xl">
                     View my meetings
                   </Button>

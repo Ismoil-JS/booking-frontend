@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Modal, Button, Radio, Input, Space } from 'antd';
+import { Modal, Button, Radio, Space } from 'antd';
 import type { TutorCategory } from '@/entities/Tutor/types';
 import { defaultFilters, type FilterState } from '@/shared/ui/FilterSidebar';
 import { filterStateToSearchParams } from '@/shared/lib/tutorMatchFilters';
 
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 3;
 
 type PriceBucket = 'all' | 'budget' | 'balanced' | 'premium';
 
@@ -29,7 +29,6 @@ export default function TutorMatchWizardModal({ open, onClose, categories }: Tut
   const [subjectKey, setSubjectKey] = useState<string | null>(null);
   const [ratingKey, setRatingKey] = useState<'0' | '3' | '4'>('0');
   const [priceBucket, setPriceBucket] = useState<PriceBucket>('all');
-  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     if (!open) return;
@@ -37,7 +36,6 @@ export default function TutorMatchWizardModal({ open, onClose, categories }: Tut
     setSubjectKey(null);
     setRatingKey('0');
     setPriceBucket('all');
-    setSearchText('');
   }, [open]);
 
   const buildFilterState = (): FilterState => {
@@ -62,7 +60,6 @@ export default function TutorMatchWizardModal({ open, onClose, categories }: Tut
       ratingMin: safeRating,
       priceMin,
       priceMax,
-      search: searchText.trim(),
     };
   };
 
@@ -92,14 +89,12 @@ export default function TutorMatchWizardModal({ open, onClose, categories }: Tut
     'What do you want to work on?',
     'How picky should we be about ratings?',
     "What's your comfort zone per hour?",
-    'Anything specific we should look for?',
   ];
 
   const subtitles = [
     "We'll prioritize tutors who teach this area.",
     'Higher bar usually means fewer tutors, often with more reviews.',
     'Same ranges as our filters—pick what feels right.',
-    'Optional: exam name, software, goal, or keyword.',
   ];
 
   return (
@@ -217,19 +212,6 @@ export default function TutorMatchWizardModal({ open, onClose, categories }: Tut
               <div className="text-sm text-gray-500">Roughly $55–100/hr.</div>
             </Radio>
           </Radio.Group>
-        )}
-
-        {step === 3 && (
-          <Input.TextArea
-            rows={4}
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            placeholder="e.g. IELTS speaking, Python basics, job interview English…"
-            className="rounded-xl"
-            maxLength={200}
-            showCount
-            aria-label="Optional keywords or goals"
-          />
         )}
       </div>
     </Modal>

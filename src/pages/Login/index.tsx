@@ -9,7 +9,7 @@ const Login = () => {
   const { login, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/dashboard';
+  const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/profile';
 
   const onFinish = async (values: { email: string; password: string }) => {
     setLoading(true);

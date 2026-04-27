@@ -212,7 +212,7 @@ export default function TutorProfile() {
                       return;
                     }
                     // Socket chat:join expects the other *user* id, not tutor profile id
-                    navigate(`/dashboard/chats?otherUserId=${tutor.user.id}`);
+                    navigate(`/chats?otherUserId=${tutor.user.id}`);
                   }}
                 >
                   Message tutor

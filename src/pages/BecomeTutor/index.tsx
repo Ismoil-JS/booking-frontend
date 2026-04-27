@@ -26,8 +26,8 @@ const BecomeTutor = () => {
         userType: 'TUTOR',
       };
       await register(payload);
-      message.success('Tutor account created! Complete your profile in the dashboard.');
-      navigate('/dashboard', { replace: true });
+      message.success('Tutor account created! Complete your profile from the account menu.');
+      navigate('/profile', { replace: true });
     } catch (e) {
       message.error(e instanceof Error ? e.message : 'Sign up failed');
     } finally {
@@ -47,7 +47,7 @@ const BecomeTutor = () => {
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Become a tutor</h1>
           <p className="text-gray-600 mb-6">
-            Create your tutor account. You can add your bio, category, and availability in the dashboard after signing up.
+            Create your tutor account. You can add your bio, category, and availability from the account menu after signing up.
           </p>
           <Form layout="vertical" onFinish={onFinish} requiredMark={false}>
             <Form.Item
@@ -118,7 +118,7 @@ const BecomeTutor = () => {
                 try {
                   await loginWithGoogle(idToken, 'TUTOR');
                   message.success('Tutor account created!');
-                  navigate('/dashboard', { replace: true });
+                  navigate('/profile', { replace: true });
                 } catch (e) {
                   message.error(e instanceof Error ? e.message : 'Google sign-in failed');
                 } finally {

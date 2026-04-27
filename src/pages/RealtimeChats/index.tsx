@@ -131,7 +131,7 @@ export default function RealtimeChatsPage() {
       if (cid == null) return;
       clearJoinTimeout();
       setJoinPending(false);
-      navigate(`/dashboard/chats/${cid}`, { replace: true });
+      navigate(`/chats/${cid}`, { replace: true });
     };
 
     const onChatError = (payload: unknown) => {
@@ -304,7 +304,7 @@ export default function RealtimeChatsPage() {
             return (
               <Link
                 key={conversation.id}
-                to={`/dashboard/chats/${conversation.id}`}
+                to={`/chats/${conversation.id}`}
                 className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors group"
               >
                 {/* Avatar */}

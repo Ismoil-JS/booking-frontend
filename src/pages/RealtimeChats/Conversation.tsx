@@ -514,7 +514,7 @@ export default function RealtimeConversationPage() {
       {/* ── Chat header ─────────────────────────────────────────── */}
       <div className="bg-white rounded-t-2xl border border-b-0 border-gray-100 shadow-sm px-4 py-3 flex items-center gap-3 flex-shrink-0">
         <Link
-          to="/dashboard/chats"
+          to="/chats"
           className="p-1.5 -ml-1 rounded-lg hover:bg-gray-100 transition-colors"
         >
           <ArrowLeft className="w-5 h-5 text-gray-600" />

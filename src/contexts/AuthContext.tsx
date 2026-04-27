@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getMe, loginApi, registerApi, googleAuthApi, type RegisterPayload } from '@/entities/Auth/api';
 import { TOKEN_KEY } from '@/services/api';
 import { setUser as setUserRedux, clearUser, selectUser, type AuthUser } from '@/store/authSlice';
+import { getChatSocket, disconnectChatSocket } from '@/entities/Chat/socket';
 
 export type LoginPayload = { email: string; password: string };
 
@@ -48,6 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem(TOKEN_KEY);
     setToken(null);
     dispatch(clearUser());
+    disconnectChatSocket();
   }, [dispatch]);
 
   const register = useCallback(async (payload: RegisterPayload) => {
@@ -82,6 +84,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Do not clear token or logout on error; keep user logged in
       });
   }, [token, dispatch]);
+
+  // Eagerly open the chat socket as soon as the app has a token, so messages,
+  // typing indicators, and unread counts are live everywhere — not only after
+  // the user navigates to /chats.  getChatSocket() is a singleton, so any
+  // later calls from chat pages just reuse this connection.
+  useEffect(() => {
+    if (!token) return;
+    getChatSocket(token);
+    // No teardown here: logout() / token change in getChatSocket handle it.
+  }, [token]);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, token, user, login, loginWithGoogle, logout, register, refreshUser }}>
