@@ -78,7 +78,7 @@ const SignupModal = ({ open, onClose }: SignupModalProps) => {
           label="Password"
           rules={[
             { required: true, message: 'Please enter a password' },
-            { min: 6, message: 'At least 6 characters' },
+            { min: 8, message: 'At least 8 characters' },
           ]}
         >
           <Input.Password placeholder="••••••••" size="large" className="rounded-xl" />
