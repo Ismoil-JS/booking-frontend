@@ -34,7 +34,6 @@ const LandingPage = () => {
   const { data: marketingTutors = [], isLoading: marketingLoading } = useTutorsQuery({ categoryIds: '3' });
   const { data: mathematicsTutors = [], isLoading: mathematicsLoading } = useTutorsQuery({ categoryIds: '4' });
   const { data: languagesTutors = [], isLoading: languagesLoading } = useTutorsQuery({ categoryIds: '5' });
-  const { data: othersTutors = [], isLoading: othersLoading } = useTutorsQuery({ categoryIds: '8' });
 
   const sections = [
     { label: 'IELTS tutors', tutors: ieltsTutors, isLoading: ieltsLoading, categoryIds: '1' },
@@ -42,7 +41,6 @@ const LandingPage = () => {
     { label: 'Marketing tutors', tutors: marketingTutors, isLoading: marketingLoading, categoryIds: '3' },
     { label: 'Mathematics tutors', tutors: mathematicsTutors, isLoading: mathematicsLoading, categoryIds: '4' },
     { label: 'Languages tutors', tutors: languagesTutors, isLoading: languagesLoading, categoryIds: '5' },
-    { label: 'Others', tutors: othersTutors, isLoading: othersLoading, categoryIds: '8' },
   ];
 
   const steps = [
